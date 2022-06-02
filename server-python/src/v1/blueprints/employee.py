@@ -1,5 +1,3 @@
-from calendar import month
-import json
 from sanic.blueprints import Blueprint
 from sanic.response import json
 from ..database.employee import Qeury
