@@ -83,7 +83,7 @@ func GetEmployeePVD(db *sql.DB) func(c *fiber.Ctx) error {
 			employeePVDs[i].TotalPVD = CalculateTotalPVD(d, now)
 			employeePVDs[i].TotalMonthPVD = CalculateTotalMonthPVD(d, now)
 		}
-		time.Sleep(time.Duration(10) * time.Second)
+		// time.Sleep(time.Duration(10) * time.Second)
 		return c.JSON(employeePVDs)
 	}
 }
