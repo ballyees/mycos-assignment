@@ -64,9 +64,7 @@ func CalculateTotalPVD(employee model.Employee, now time.Time) (totalPVD float64
 		year = 1
 		month = 0
 	}
-	if year >= 0 { // less than 1 year
-		totalPVD += CalculatePVD(math.Max((12*year)+month-3, 0), 10, employee)
-	}
+	totalPVD += CalculatePVD(math.Max((12*year)+month-3, 0), 10, employee) // less than 1 year
 	return totalPVD
 }
 
