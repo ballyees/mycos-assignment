@@ -9,6 +9,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+const TimeFormat = "2006-01-02"
+
 type EmployeePVD struct {
 	Employee      model.Employee
 	TotalPVD      float64

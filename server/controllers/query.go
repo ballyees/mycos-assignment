@@ -9,8 +9,6 @@ import (
 	. "github.com/go-jet/jet/v2/sqlite"
 )
 
-const TimeFormat = "2006-01-02"
-
 func QueryAllEmployee(db *sql.DB) (error, []model.Employee) {
 	stmt := SELECT(
 		table.Employee.AllColumns,
