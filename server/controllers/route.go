@@ -9,4 +9,5 @@ import (
 func SetupRoutes(app *fiber.App, db *sql.DB) {
 	v1 := app.Group("/v1")
 	v1.Get("pvd", GetEmployeePVD(db))
+	v1.Get("pvd/web", GetEmployeePVDHtml(db))
 }

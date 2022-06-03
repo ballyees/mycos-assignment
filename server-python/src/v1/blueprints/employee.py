@@ -1,11 +1,14 @@
 from sanic.blueprints import Blueprint
-from sanic.response import json
+from sanic.response import json, html
 from ..database.employee import Qeury
 from datetime import datetime as dt
+from os.path import join, dirname, abspath
 
 bp = Blueprint('employee', url_prefix='/pvd')
 time_format = '%Y-%m-%d'
-
+with open(join(dirname(abspath(__file__)), 'template.tphtml'), 'r') as f:
+    template = f.read()
+    
 @bp.route('/', methods=["GET"])
 async def get_all_employee(request):
     data = Qeury.get_all_employee()
@@ -16,6 +19,29 @@ async def get_all_employee(request):
         reponse[i]['TotalPVD'] = calculate_total_pvd(d, now)
         reponse[i]['TotalMonthPVD'] = calculate_total_month_pvd(d, now)
     return json(reponse)
+
+@bp.route('/web', methods=["GET"])
+async def get_all_employee(request):
+    data = Qeury.get_all_employee()
+    reponse = [{} for i in range(len(data))]
+    now = dt.now()
+    for i, d in enumerate(data):
+        reponse[i]['Employee'] = d
+        reponse[i]['TotalPVD'] = calculate_total_pvd(d, now)
+        reponse[i]['TotalMonthPVD'] = calculate_total_month_pvd(d, now)
+    data_str = ''
+    for i, d in enumerate(reponse):
+        data_str += '<tr>\n'
+        data_str += f'<td>{d["Employee"]["ID"]}</td>\n'
+        data_str += f'<td>{d["Employee"]["FirstName"]}</td>\n'
+        data_str += f'<td>{d["Employee"]["LastName"]}</td>\n'
+        data_str += f'<td>{d["Employee"]["BirthDate"]}</td>\n'
+        data_str += f'<td>{d["Employee"]["StartDate"]}</td>\n'
+        data_str += f'<td>{d["Employee"]["Salary"]}</td>\n'
+        data_str += f'<td>{d["Employee"]["PvdFundRate"]}</td>\n'
+        data_str += f'<td>{d["TotalPVD"]}</td>\n'
+        data_str += '</tr>\n'
+    return html(template.format(tbody=data_str))
 
 def calculate_pvd(employee, month, paid_rate):
     return ((employee['Salary'] * paid_rate / 100) * month) + ((employee['Salary'] * employee['PvdFundRate'] / 100) * month)
