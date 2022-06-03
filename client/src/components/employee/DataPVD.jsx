@@ -1,5 +1,6 @@
-import { useEffect, useState, useTransition } from 'react';
+import { useEffect, useState } from 'react';
 import Table from 'react-bootstrap/Table';
+import Config from '../../config';
 
 const columns = [
   { feild: 'ID', displayName: 'ID' },
@@ -16,7 +17,7 @@ function DataEmployeePVD() {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
-    fetch('http://localhost:8000/v1/pvd')
+    fetch(Config.getConfig().pvdURL)
       .then(res => res.json())
       .then(res => {
         res = res.map(data => {
